@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import DatePicker from 'material-ui/DatePicker';
+import Navigation from "./Navigation";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -49,7 +49,7 @@ class Edit extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const {fromAddress, toAddress, serviceDate, serviceType, note,serviceTypesValues} = this.state.serviceOrder;
+    const {fromAddress, toAddress, serviceDate, serviceType, note, serviceTypesValues} = this.state.serviceOrder;
     const {name, phone, email} = this.state.customer;
 
     axios.put('http://localhost:8086//orderplacement/serviceOrders/' + this.props.match.params.id,
@@ -88,13 +88,11 @@ class Edit extends Component {
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">
-                EDIT order
-              </h3>
+                Edit order
+              </h3>&nbsp;
             </div>
             <div class="panel-body">
-              <h4><Link to={`/show/${this.state.serviceOrder.id}`}><span class="glyphicon glyphicon-eye-open"
-                                                                         aria-hidden="true"></span> Order List</Link>
-              </h4>
+              <Navigation/>
               <form onSubmit={this.onSubmit}>
                 <div className="form-row">
                   <div className="form-group col-md-4">
@@ -119,15 +117,10 @@ class Edit extends Component {
                   </div>
                   <div className="form-group col-md-4">
                     <label htmlFor="serviceDate">Service date</label>
-                    <MuiThemeProvider>
-
-                      <DatePicker
-                          onChange={this.handleDateChange}
-                          autoOk={true}
-                          hintText="Date"
-                          value={this.state.serviceOrder.serviceDate}
-                          className="time-options-picker"
-                      /></MuiThemeProvider>
+                    <input type="text" className="form-control" name="serviceDate"
+                           value={this.state.serviceOrder.serviceDate}
+                           onChange={this.onChangeServiceOrder}
+                    />
                   </div>
                 </div>
 
@@ -146,11 +139,10 @@ class Edit extends Component {
                 </div>
                 <div className="form-row">
                   <div className="form-group col-md-4">
-                    <label htmlFor="serviceType">Service type:</label>
                     <MuiThemeProvider>
+                    <label htmlFor="serviceType">Service type:</label><br/>
                       <SelectField
                           multiple={true}
-                          floatingLabelText="Service type"
                           value={this.state.serviceOrder.serviceType}
                           onChange={this.handleChange}
                       >
@@ -167,7 +159,7 @@ class Edit extends Component {
                   </div>
                 </div>
 
-                <button type="submit" className="btn btn-default">Update</button>
+                <button type="submit" className="btn btn-info">Update</button>
               </form>
             </div>
           </div>

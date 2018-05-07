@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import DatePicker from 'material-ui/DatePicker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import DatePicker from 'material-ui/DatePicker'
+
 
 const querystring = require('querystring');
 
@@ -25,7 +25,7 @@ class Create extends Component {
       toAddress: '',
       phone: '',
       email: '',
-      serviceDate: new Date(),
+      serviceDate: '2018-07-05',
       serviceType: '',
       note: '',
       serviceTypesValues: []
@@ -57,14 +57,18 @@ class Create extends Component {
     )
         .then((result) => {
           this.props.history.push("/")
-        });
+        }).catch(error => {
+      console.warn('Failed to save' +
+          '' + error)
+    })
+      ;
   }
 
-  handleDateChange = (event, value) => {
+ /* handleDateChange = (event, value) => {
     this.setState({
       serviceDate: new Date(value)
     });
-  };
+  };*/
   handleChange = (event, index, serviceTypesValues) => this.setState({serviceTypesValues});
 
   menuItems(serviceTypesValues) {
@@ -82,21 +86,23 @@ class Create extends Component {
   render() {
     const {name, fromAddress, toAddress, phone, email, serviceDate, serviceType, note,serviceTypesValues} = this.state;
     return (
-        <div class="container">
-          <div class="panel panel-default">
-            <div class="panel-heading">
+        <div className="container">
+          <div className="panel panel-default">
+            <div className="panel-heading">
               <h3 class="panel-title">
-                Place Order
-              </h3>
+                Add order
+              </h3>&nbsp;
             </div>
-            <div class="panel-body">
-              <h4><Link to="/"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Contacts List</Link>
+            <div className="panel-body">
+              <h4><Link to="/">
+                <button className="btn btn-info">Back to main page</button>
+              </Link>
               </h4>
               <form onSubmit={this.onSubmit}>
                 <div className="form-row">
-                  <div class="form-group col-md-4">
+                  <div className="form-group col-md-4">
                     <label for="name">Name:</label>
-                    <input type="text" class="form-control" name="name" value={name} onChange={this.onChange}
+                    <input type="text" className="form-control" name="name" value={name} onChange={this.onChange}
                            placeholder="Name"/>
                   </div>
                   <div className="form-group col-md-4">
@@ -104,6 +110,7 @@ class Create extends Component {
                     <input type="text" className="form-control" name="phone" value={phone} onChange={this.onChange}
                            placeholder="Phone Number"/>
                   </div>
+
                 </div>
                 <div className="form-row">
                   <div className="form-group col-md-4">
@@ -113,35 +120,29 @@ class Create extends Component {
                   </div>
                   <div className="form-group col-md-4">
                     <label for="serviceDate">Service date</label>
-                    <MuiThemeProvider>
-                      <DatePicker
-                          onChange={this.handleDateChange}
-                          autoOk={true}
-                          hintText="Date"
-                          value={serviceDate}
-                          className="time-options-picker"
-                      /></MuiThemeProvider>
+                    <input type="text" className="form-control" name="serviceDate" value={serviceDate} onChange={this.onChange}
+                        />
                   </div>
                 </div>
 
                 <div className="form-group">
                   <label for="fromAddress">From Address:</label>
-                  <input type="text" class="form-control" name="fromAddress" value={fromAddress}
+                  <input type="text" className="form-control" name="fromAddress" value={fromAddress}
                          onChange={this.onChange}
                          placeholder="From Address"/>
                 </div>
                 <div className="form-group">
                   <label for="toAddress">To Address:</label>
-                  <input type="text" class="form-control" name="toAddress" value={toAddress} onChange={this.onChange}
+                  <input type="text" className="form-control" name="toAddress" value={toAddress} onChange={this.onChange}
                          placeholder="To Address"/>
                 </div>
                 <div className="form-row">
                   <div className="form-group col-md-3">
-                    <label for="serviceType">Service type:</label>
                     <MuiThemeProvider>
+                    <label for="serviceType">Service type:</label>
+
                       <SelectField
                           multiple={true}
-                          floatingLabelText="Service type"
                           value={serviceTypesValues}
                           onChange={this.handleChange}
                       >
@@ -155,7 +156,7 @@ class Create extends Component {
                   </div>
                 </div>
 
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" className="btn btn-info">Save</button>
               </form>
             </div>
           </div>
